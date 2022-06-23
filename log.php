@@ -1,5 +1,6 @@
 <?php
 require('connection.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,15 +19,27 @@ require('connection.php');
 	<a href="#">Contact</a>
 	<a href="#">About</a>
     </nav>
-    <div class="sign-in-up">
-    	<button type="button" onclick="popup('login-popup')">Login</button>
-    	<button type="button" onclick="popup('register-popup')">Register Here</button>
-    </div>
+
+    <?php
+    if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==true)
+    	{
+
+    		echo "<div class='user'>". $_SESSION['username'] ."- <a href='logout.php'>LOGOUT</a></div>";
+    } else{
+    	?>
+		<div class='sign-in-up'>
+	    	<button type='button' onclick="popup('login-popup')">Login</button>
+	    	<button type='button' onclick="popup('register-popup')">Register Here</button>
+	    </div>
+	<?php
+	}
+    ?>
+    
 </header>
 
 <div class="popup-container" id="login-popup">
 	<div class="popup">
-	<form method="POST" action="loging_register.php">
+	<form method="POST" action="login_register.php">
 		<h2>
 			<span>USER LOGIN</span>
 			<button type="reset" onclick="popup('login-popup')">X</button>
@@ -40,7 +53,7 @@ require('connection.php');
 
 <div class="popup-container" id="register-popup">
 	<div class="register popup">
-	<form method="POST" action="loging_register.php">
+	<form method="POST" action="login_register.php">
 		<h2>
 			<span>USER Registration</span>
 			<button type="reset" onclick="popup('register-popup')">X</button>
@@ -53,6 +66,14 @@ require('connection.php');
 	</form>
 	</div>
 </div>
+
+<?php
+if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==true)
+{
+echo "<h1 style= 'text-align: center; margin-top: 200px;'> Welcome to this page - $_SESSION[username]</h1>";
+}
+?>
+
 <script>
 	function popup(popup_name)
 	{

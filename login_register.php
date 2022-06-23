@@ -1,10 +1,12 @@
 <?php
 
 require('connection.php');
+session_start();
 
 #for login
 if(isset($_POST['login']))
 {
+	
 	$query="SELECT * FROM `registered_user` WHERE email = '$_POST[email_username]' OR username = '$_POST[email_username]';";
 
 
@@ -18,7 +20,10 @@ if(isset($_POST['login']))
 if(password_verify($_POST['password'], $result_fetch['password']))
 {
 	#password matching, if matched
-	echo "password right";
+	$_SESSION['logged_in']=true;
+	$_SESSION['username']=$result_fetch['username'];
+	header("location:log.php");
+
 }
 else{
 	#if doesn't match
